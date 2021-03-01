@@ -53,9 +53,10 @@ expression `3 + 5`, using the semantics rules in Figure 13.5.
           | 5 ⇓ 5          (R_int)
           ⇓ 8              (R_+)
 
-(This derivation was actually given in the reading in Section
-13.1. We've annotated each line with the semantic rule that it
-uses. You should do that too below.) *)
+   This derivation was actually given in the reading in Section
+   13.1. We've annotated each line with the semantic rule that it
+   uses. You should do that too below.
+ *)
 
 (*....................................................................
 Exercise 2. What is the result of the following substitution according
@@ -75,12 +76,22 @@ to the definition in Figure 13.4?
    was used from the set of equations for substitution in Figure
    13.4. You should do that too. 
 
+   NOTICE that in carrying out these substitution derivations, we use
+   the = operator. The idea is that the expression on the left of the
+   = is *the same as* (equal to) the expression on the right. For
+   instance, the expression indicated by (x + 5) [x ↦ 3] (the
+   expression resulting from substituting 3 for x in x + 5 *is* the
+   expression 3 + 5. The = relation differs from the ⇓ ("evaluates
+   to") relation. In particular, the former is symmetric; the latter
+   is not.
+
    NOTICE that the result of substituting `3` for `x` in `x + 5` is
    `3 + 5` and not `8`. Do you understand why? *)
 
 (*....................................................................
 Exercise 3. Carry out the derivation for the semantics of the
-expression `let x = 3 in x + 5`. 
+expression `let x = 3 in x + 5`, using the semantics rules in Figure
+13.5.
 ....................................................................*)
 
 (* ANSWER:
@@ -98,7 +109,7 @@ pencil on paper, rather than typing them in.
 
 ......................................................................
 Exercise 4. Carry out the derivation for the semantics of the
-expression `8 - 2`.
+expression `8 - 2`, using the semantics rules in Figure 13.5.
 ....................................................................*)
 
 (* ANSWER:
@@ -111,7 +122,7 @@ expression `8 - 2`.
 
 (*....................................................................
 Exercise 5. Carry out the derivation for the semantics of the
-expression `6 * 6`.
+expression `6 * 6`, using the semantics rules in Figure 13.5.
 ....................................................................*)
 
 (* ANSWER:
@@ -136,15 +147,15 @@ to the definition in Figure 13.4?
  *)
 
 (*....................................................................
-Exercise 7. The set of 10 equations defining substitution in Figure 
+Exercise 7. The set of 11 equations defining substitution in Figure 
 13.4 has an equation for function application. You'll need this
 equation in some exercises below. Without looking at Figure 13.4,
 what do you think such an equation should look like? Check your
 understanding against Figure 13.4. 
 ....................................................................*)
 
-(*    (P R)[x ↦ Q] = P[x ↦ Q]  R[x ↦ Q]       *)
-
+(*    (Q R)[x ↦ P] = Q[x ↦ P]  R[x ↦ P]       *)
+     
 (*....................................................................
 Exercise 8. What is the result of the following substitution according
 to the definition in Figure 13.4?
@@ -167,6 +178,8 @@ Exercise 9. Carry out the derivation for the semantics of the
 expression
 
     (fun x -> x * x) (8 - 2)
+
+using the semantics rules in Figure 13.5.
 ....................................................................*)
 
 (* ANSWER:
@@ -180,10 +193,12 @@ expression
  *)
 
 (*....................................................................
-Exercise 10. Finally, carry out the derivation for the semantics of the
-expression
+Exercise 10. Finally, carry out the derivation for the semantics of
+the expression
 
     let x = 3 + 5 in (fun x -> x * x) (x - 2)
+
+using the semantics rules in Figure 13.5.
 ....................................................................*)
 
 (* ANSWER:
@@ -207,7 +222,11 @@ tedious. *)
 (*....................................................................
 Exercise 11: Use the definition of FV to derive the set of free
 variables in the expressions below. Show all steps using pen and
-paper.
+paper. (You can see an example derivation for
+
+       FV(fun y -> f (x + y))
+
+in Section 13.3.2 of the textbook.)
 
 1. let x = 3 in let y = x in f x y
 
@@ -385,10 +404,22 @@ language from the textbook.
 
 ......................................................................
 Exercise 14: We've provided below type definitions for expressions
-with this syntax Augment the type definitions to allow for other
+with this syntax. Augment the type definitions to allow for other
 binary operations (at least Minus and Times) and for unary operations
 (at least Negate). Hint: Don't forget to extend the type definition of
 expr to support unary operations as well.
+
+When you're done, you should be able to specify expressions such as
+the following:
+
+    # Int 3 ;;
+    - : expr = Int 3
+    # Binop (Plus, Int 3, Var "x") ;;
+    - : expr = Binop (Plus, Int 3, Var "x")
+    # Unop (Negate, Int 3) ;;
+    - : expr = Unop (Negate, Int 3)
+    # Let ("x", Int 3, Binop (Plus, Int 3, Var "x")) ;;
+    - : expr = Let ("x", Int 3, Binop (Plus, Int 3, Var "x"))
 ....................................................................*)
 
 type varspec = string ;;
@@ -552,4 +583,6 @@ For instance, try the following expression, which is essentially
                   Let ("y", Int 3, 
                             Binop (Times, Var "x", Var "y")))) ;;
 - : expr = Int 18
+
+You now have a good start on the final project!
 ......................................................................*)
